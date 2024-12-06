@@ -443,3 +443,71 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 });
+
+// Add this after your DOMContentLoaded event listener
+    function addTouchSupport() {
+        // Improve touch response time
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        // Handle touch events for interactive elements
+        const interactiveElements = document.querySelectorAll('.letter, .gallery-item, .playlist-item');
+        
+        interactiveElements.forEach(element => {
+            element.addEventListener('touchstart', function(e) {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            element.addEventListener('touchend', function(e) {
+                this.style.transform = '';
+            });
+        });
+        
+        // Improve scroll performance
+        let ticking = false;
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    updateScrollIndicator();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+    }
+
+    // Call the function to add touch support
+    addTouchSupport();
+
+    // Update modal navigation for touch devices
+    function updateModalNavigation() {
+        const modal = document.querySelector('.memory-modal');
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        modal.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+        
+        modal.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next image
+                    document.querySelector('.modal-next').click();
+                } else {
+                    // Swipe right - previous image
+                    document.querySelector('.modal-prev').click();
+                }
+            }
+        }
+    }
+
+    updateModalNavigation();
+});
