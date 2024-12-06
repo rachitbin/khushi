@@ -2,7 +2,7 @@
     --primary-pink: #FFB6C1;
     --secondary-lavender: #E6E6FA;
     --text-color: #4a4a4a;
-    --section-padding: clamp(2rem,5vw,4rem);
+    --section-padding: clamp(2rem, 5vw, 4rem);
 }
 
 * {
@@ -42,7 +42,7 @@ body::-webkit-scrollbar {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     backdrop-filter: blur(5px);
-    padding: clamp(1.5rem, 4vw. 3rem);
+    padding: clamp(1.5rem, 4vw, 3rem);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     width: min(90%, 600px);
     margin: 0 auto;
@@ -279,7 +279,7 @@ h1 {
     font-family: 'Dancing Script', cursive;
     color: var(--primary-pink);
     margin-bottom: 1rem;
-    font-size: clamp(1.8rem, 5vw. 2.5rem);
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -596,6 +596,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    flex-direction: column;
     text-align: center;
 }
 
@@ -941,7 +942,7 @@ h1 {
 .gallery-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-    gap: clamp(1ren, 3vw, 2rem);
+    gap: clamp(1rem, 3vw, 2rem);
     padding: clamp(1rem, 3vw, 2rem);
     max-width: 1200px;
     margin: 0 auto;
@@ -1208,6 +1209,10 @@ h1 {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--primary-pink) rgba(255, 182, 193, 0.1);
+    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+    overscroll-behavior: contain; /* Prevent parent scrolling while scrolling letter */
+    touch-action: pan-y; /* Enable vertical touch scrolling */
+    max-height: 80vh; /* Ensure it doesn't get too tall on mobile */
 }
 
 .letter-paper::-webkit-scrollbar {
@@ -1370,7 +1375,7 @@ h1 {
 
 /* Add these styles for the question box */
 .question-box-container {
-    width: min(90%,400px);
+    width: min(90%, 400px);
     max-width: 400px;
     margin: 4rem auto;
     text-align: center;
@@ -1571,6 +1576,32 @@ h1 {
     }
 }
 
+/* Mobile-specific adjustments */
+@media (max-width: 480px) {
+    .scroll-indicator {
+        right: 0.5rem;
+    }
+    
+    .scroll-dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .modal-prev,
+    .modal-next {
+        padding: 0.5rem;
+        font-size: 1rem;
+    }
+    
+    .control-buttons {
+        gap: 1rem;
+    }
+    
+    .volume-control {
+        display: none;
+    }
+}
+
 /* Landscape mode adjustments */
 @media (max-height: 600px) and (orientation: landscape) {
     .landing-page {
@@ -1666,5 +1697,36 @@ h1 {
     100% {
         transform: scale(40) translate(-50%, -50%);
         opacity: 0;
+    }
+}
+
+/* Update secret letter styles for better touch handling */
+.letter-paper {
+    /* ... existing styles ... */
+    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+    overscroll-behavior: contain; /* Prevent parent scrolling while scrolling letter */
+    touch-action: pan-y; /* Enable vertical touch scrolling */
+    max-height: 80vh; /* Ensure it doesn't get too tall on mobile */
+}
+
+/* Add specific mobile styles */
+@media (max-width: 768px) {
+    .secret-letter {
+        top: 10px;
+        right: 10px;
+    }
+
+    .secret-letter.open {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        height: 80vh;
+        max-height: 600px;
+    }
+
+    .letter-paper {
+        padding: 1.5rem;
+        font-size: 0.95rem;
     }
 }
