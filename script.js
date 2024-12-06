@@ -378,21 +378,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add this inside your DOMContentLoaded event listener
     const secretLetter = document.querySelector('.secret-letter');
+    const letterPaper = document.querySelector('.letter-paper');
 
-    // Remove existing click handlers
+    // Remove existing handlers
     secretLetter.removeEventListener('click', () => {});
+    secretLetter.removeEventListener('touchstart', () => {});
 
+    // Prevent default touch events on the letter paper to allow scrolling
+    letterPaper.addEventListener('touchstart', (e) => {
+        e.stopPropagation(); // Prevent the secret letter from closing
+    }, { passive: true });
+
+    letterPaper.addEventListener('touchmove', (e) => {
+        e.stopPropagation(); // Prevent the secret letter from closing
+    }, { passive: true });
+
+    // Update the secret letter interaction handler
     const handleSecretLetterInteraction = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        if (e.type === 'touchstart') {
+            e.preventDefault(); // Prevent double-firing on touch devices
+        }
+        
+        // Don't close if touching the letter paper
+        if (e.target.closest('.letter-paper')) {
+            return;
+        }
+        
         secretLetter.classList.toggle('open');
     };
 
+    // Add touch and click handlers
     secretLetter.addEventListener('touchstart', handleSecretLetterInteraction, { passive: false });
     secretLetter.addEventListener('click', handleSecretLetterInteraction);
 
-    // Update document click/touch handler to close letter
+    // Update document handler to close letter
     const handleDocumentInteraction = (e) => {
+        // Don't close if touching the letter paper
+        if (e.target.closest('.letter-paper')) {
+            return;
+        }
+        
+        // Close if clicking/touching outside the secret letter
         if (!secretLetter.contains(e.target) && secretLetter.classList.contains('open')) {
             secretLetter.classList.remove('open');
         }
@@ -400,6 +426,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('touchstart', handleDocumentInteraction, { passive: true });
     document.addEventListener('click', handleDocumentInteraction);
+
+    // Add this to prevent body scrolling when secret letter is open
+    document.body.addEventListener('touchmove', (e) => {
+        if (secretLetter.classList.contains('open') && !e.target.closest('.letter-paper')) {
+            e.preventDefault();
+        }
+    }, { passive: false });
 
     // Add this at the end of your DOMContentLoaded event listener
     const giftBox = document.querySelector('.question-box-container');
