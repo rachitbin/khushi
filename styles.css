@@ -2,6 +2,7 @@
     --primary-pink: #FFB6C1;
     --secondary-lavender: #E6E6FA;
     --text-color: #4a4a4a;
+    --section-padding: clamp(2rem,5vw,4rem);
 }
 
 * {
@@ -41,13 +42,15 @@ body::-webkit-scrollbar {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     backdrop-filter: blur(5px);
-    padding: 3rem;
+    padding: clamp(1.5rem, 4vw. 3rem);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: min(90%, 600px);
+    margin: 0 auto;
 }
 
 h1 {
     font-family: 'Dancing Script', cursive;
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 8vw, 4rem);
     margin-bottom: 1rem;
     opacity: 0;
     transform: translateY(20px);
@@ -131,12 +134,12 @@ h1 {
 
 .letters-section {
     min-height: 100vh;
-    padding: 4rem 2rem;
+    padding: var(--section-padding);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
+    gap: clamp(1.5rem, 4vw, 3rem);
     background: linear-gradient(135deg, 
         rgba(230, 230, 250, 0.9),
         rgba(255, 182, 193, 0.9));
@@ -157,8 +160,9 @@ h1 {
 }
 
 .letter {
-    width: 300px;
-    height: 400px;
+    width: min(90%, 300px);
+    height: auto;
+    aspect-ratio: 3/4;
     perspective: 1000px;
     cursor: pointer;
     position: relative;
@@ -275,7 +279,7 @@ h1 {
     font-family: 'Dancing Script', cursive;
     color: var(--primary-pink);
     margin-bottom: 1rem;
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 5vw. 2.5rem);
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -399,7 +403,7 @@ h1 {
 
 .music-section {
     min-height: 100vh;
-    padding: 4rem 2rem;
+    padding: var(--section-padding);
     background: linear-gradient(135deg, 
         rgba(230, 230, 250, 0.9),
         rgba(255, 182, 193, 0.9));
@@ -572,7 +576,7 @@ h1 {
 
 /* Custom Audio Player Styles */
 .custom-audio-player {
-    width: 90%;
+    width: min(95%, 800px);
     max-width: 800px;
     margin: 2rem auto;
     background: rgba(255, 255, 255, 0.95);
@@ -592,11 +596,19 @@ h1 {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .player-header {
+        flex-direction: row;
+        text-align: left;
+    }
 }
 
 .current-song-img {
-    width: 100px;
-    height: 100px;
+    width: clamp(80px, 15vw, 100px);
+    height: clamp(80px, 15vw, 100px);
     border-radius: 10px;
     object-fit: cover;
     border: 2px solid var(--primary-pink);
@@ -729,7 +741,7 @@ h1 {
 }
 
 .playlist {
-    width: 90%;
+    width: min(95%, 800px);
     max-width: 800px;
     margin: 2rem auto;
     display: flex;
@@ -741,7 +753,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem;
+    padding: clamp(0.8rem, 2vw, 1rem);
     background: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     cursor: pointer;
@@ -872,11 +884,11 @@ h1 {
 /* Add navigation button styles */
 .page-nav-btn {
     position: absolute;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: clamp(1rem, 3vw, 2rem);
+    right: clamp(1rem, 3vw, 2rem);
     background: rgba(255, 255, 255, 0.9);
     border: 2px solid var(--primary-pink);
-    padding: 0.8rem 1.5rem;
+    padding: clamp(0.6rem, 2vw, 0.8rem) clamp(1rem, 3vw, 1.5rem);
     border-radius: 25px;
     color: var(--text-color);
     font-family: 'Quicksand', sans-serif;
@@ -888,6 +900,7 @@ h1 {
     gap: 0.5rem;
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 .page-nav-btn span {
@@ -927,11 +940,12 @@ h1 {
 /* Gallery Styles */
 .gallery-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: clamp(1ren, 3vw, 2rem);
+    padding: clamp(1rem, 3vw, 2rem);
     max-width: 1200px;
     margin: 0 auto;
+    width: min(95%, 1200px);
 }
 
 .gallery-item {
@@ -1049,7 +1063,7 @@ h1 {
     height: 100%;
     background: rgba(0, 0, 0, 0.9);
     z-index: 1000;
-    padding: 2rem;
+    padding: clamp(1rem, 3vw, 2rem);
     box-sizing: border-box;
 }
 
@@ -1061,7 +1075,7 @@ h1 {
 }
 
 .modal-image {
-    max-width: 90%;
+    max-width: min(95%, 1200px);
     max-height: 80vh;
     object-fit: contain;
     border-radius: 10px;
@@ -1143,8 +1157,8 @@ h1 {
 }
 
 .secret-letter.open {
-    width: 350px;
-    height: 450px;
+    width: min(95%, 350px);
+    height: min(90vh, 450px);
 }
 
 .secret-letter-content {
@@ -1356,7 +1370,7 @@ h1 {
 
 /* Add these styles for the question box */
 .question-box-container {
-    width: 100%;
+    width: min(90%,400px);
     max-width: 400px;
     margin: 4rem auto;
     text-align: center;
@@ -1556,3 +1570,41 @@ h1 {
         top: -20px;
     }
 }
+
+/* Landscape mode adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+    .landing-page {
+        padding: 1rem;
+    }
+    
+    .welcome-screen {
+        transform: scale(0.8);
+    }
+    
+    .letter {
+        aspect-ratio: 4/3;
+    }
+    
+    .gallery-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+/* Add touch-friendly interactions */
+@media (hover: none) {
+    .letter:hover,
+    .gallery-item:hover,
+    .playlist-item:hover {
+        transform: none;
+    }
+    
+    .gallery-overlay {
+        transform: translateY(0);
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0)
+        );
+    }
+}
+
