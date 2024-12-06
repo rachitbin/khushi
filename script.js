@@ -332,11 +332,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentImageIndex = 0;
 
     galleryItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
+        const handleGalleryInteraction = (e) => {
+            e.preventDefault();
             currentImageIndex = index;
             updateModal(item);
             modal.classList.add('active');
-        });
+        };
+
+        item.addEventListener('touchstart', handleGalleryInteraction, { passive: false });
+        item.addEventListener('click', handleGalleryInteraction);
     });
 
     function updateModal(item) {
@@ -372,7 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
     // Add this inside your DOMContentLoaded event listener
     const secretLetter = document.querySelector('.secret-letter');
 
@@ -397,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('touchstart', handleDocumentInteraction, { passive: true });
     document.addEventListener('click', handleDocumentInteraction);
-
 
     // Add this at the end of your DOMContentLoaded event listener
     const giftBox = document.querySelector('.question-box-container');
@@ -433,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.classList.add('show');
         
         // Create heart burst animation
-        const hearts = ['💖', '💝', '💕', '💗', '💓'];
+        const hearts = ['💖', '💝', '', '💗', '💓'];
         for (let i = 0; i < 15; i++) {
             const heart = document.createElement('span');
             heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
@@ -463,9 +465,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     `;
     document.head.appendChild(style);
-});
 
-// Add this after your DOMContentLoaded event listener
+    // Add this after your DOMContentLoaded event listener
     function addTouchSupport() {
         // Improve touch response time
         document.addEventListener('touchstart', function() {}, {passive: true});
@@ -540,6 +541,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    
+
     updateModalNavigation();
 });
