@@ -11,9 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Letter click handlers
     letters.forEach(letter => {
-        letter.addEventListener('click', () => {
+        // Remove existing click handler
+        letter.removeEventListener('click', () => {});
+        
+        // Add touch and click handlers
+        const handleInteraction = (e) => {
+            e.preventDefault(); // Prevent double-firing on touch devices
             letter.classList.toggle('open');
-        });
+        };
+
+        letter.addEventListener('touchstart', handleInteraction, { passive: false });
+        letter.addEventListener('click', handleInteraction);
     });
 
     // Cherry blossom animation
@@ -364,19 +372,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    
     // Add this inside your DOMContentLoaded event listener
     const secretLetter = document.querySelector('.secret-letter');
 
-    secretLetter.addEventListener('click', () => {
-        secretLetter.classList.toggle('open');
-    });
+    // Remove existing click handlers
+    secretLetter.removeEventListener('click', () => {});
 
-    // Close letter when clicking outside
-    document.addEventListener('click', (e) => {
+    const handleSecretLetterInteraction = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        secretLetter.classList.toggle('open');
+    };
+
+    secretLetter.addEventListener('touchstart', handleSecretLetterInteraction, { passive: false });
+    secretLetter.addEventListener('click', handleSecretLetterInteraction);
+
+    // Update document click/touch handler to close letter
+    const handleDocumentInteraction = (e) => {
         if (!secretLetter.contains(e.target) && secretLetter.classList.contains('open')) {
             secretLetter.classList.remove('open');
         }
-    });
+    };
+
+    document.addEventListener('touchstart', handleDocumentInteraction, { passive: true });
+    document.addEventListener('click', handleDocumentInteraction);
+
 
     // Add this at the end of your DOMContentLoaded event listener
     const giftBox = document.querySelector('.question-box-container');
@@ -480,34 +501,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update modal navigation for touch devices
     function updateModalNavigation() {
-        const modal = document.querySelector('.memory-modal');
         let touchStartX = 0;
+        let touchStartY = 0;
         let touchEndX = 0;
-        
-        modal.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, {passive: true});
-        
-        modal.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
+        let touchEndY = 0;
+
+        modal.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        modal.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Prevent page scrolling while swiping
+        }, { passive: false });
+
+        modal.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            touchEndY = e.changedTouches[0].clientY;
             handleSwipe();
-        }, {passive: true});
-        
+        }, { passive: true });
+
         function handleSwipe() {
             const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-            
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
+            const diffX = touchStartX - touchEndX;
+            const diffY = touchStartY - touchEndY;
+
+            // Only handle horizontal swipes (ignore vertical scrolling attempts)
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+                if (diffX > 0) {
                     // Swipe left - next image
-                    document.querySelector('.modal-next').click();
+                    currentImageIndex = (currentImageIndex + 1) % galleryItems.length;
+                    updateModal(galleryItems[currentImageIndex]);
                 } else {
                     // Swipe right - previous image
-                    document.querySelector('.modal-prev').click();
+                    currentImageIndex = (currentImageIndex - 1 + galleryItems.length) % galleryItems.length;
+                    updateModal(galleryItems[currentImageIndex]);
                 }
             }
         }
     }
-
+    
     updateModalNavigation();
 });
