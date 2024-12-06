@@ -1592,19 +1592,79 @@ h1 {
 
 /* Add touch-friendly interactions */
 @media (hover: none) {
+    /* Remove hover effects that might interfere with touch */
     .letter:hover,
     .gallery-item:hover,
-    .playlist-item:hover {
+    .playlist-item:hover,
+    .page-nav-btn:hover {
         transform: none;
     }
     
+    /* Make overlays always visible on touch devices */
     .gallery-overlay {
         transform: translateY(0);
+        opacity: 0.8;
         background: linear-gradient(
             to top,
-            rgba(0, 0, 0, 0.6),
-            rgba(0, 0, 0, 0)
+            rgba(0, 0, 0, 0.8),
+            rgba(0, 0, 0, 0.2)
         );
+    }
+    
+    /* Increase touch targets */
+    .control-buttons button,
+    .modal-prev,
+    .modal-next,
+    .modal-close {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 12px;
+    }
+    
+    /* Add active state for touch feedback */
+    .letter:active,
+    .gallery-item:active,
+    .playlist-item:active,
+    .page-nav-btn:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+    
+    /* Improve scroll indicator for touch */
+    .scroll-dot {
+        width: 16px;
+        height: 16px;
+        margin: 8px 0;
     }
 }
 
+/* Add touch feedback */
+.touch-feedback {
+    position: relative;
+    overflow: hidden;
+}
+
+.touch-feedback::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1) translate(-50%, -50%);
+    animation: touch-ripple 0.6s linear;
+}
+
+@keyframes touch-ripple {
+    0% {
+        transform: scale(1) translate(-50%, -50%);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(40) translate(-50%, -50%);
+        opacity: 0;
+    }
+}
